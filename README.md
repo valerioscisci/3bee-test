@@ -8,6 +8,8 @@
 
 Create a TicTacToe app like this:
 
+![image](./example.png)
+
 ## Requirements
 
 You **must** follow this implementation:
