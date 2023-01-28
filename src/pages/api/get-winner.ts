@@ -27,11 +27,12 @@ export default function handler(
   const winner = checkBoardWinner(
     body.boardState
   );
-  console.log(winner);
 
   // If no winner return 404
   if (winner === "NO_WINNER") {
-    res.status(404);
+    res
+      .status(404)
+      .send({ error: "Winner not found" });
   } else {
     // IF winner return 200 body {winner: "X"}
     res.status(200).json({ winner: winner });

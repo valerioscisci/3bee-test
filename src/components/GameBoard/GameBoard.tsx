@@ -2,6 +2,7 @@ import { BOARD_STRUCTURE } from "@/const/constants";
 import { useBoard } from "@/contexts/BoardContext";
 import { Player } from "@/types";
 import { useCallback } from "react";
+import { useResetBoard } from "../hooks/useResetBoard";
 
 interface GameboardProps {
   onChange: (
@@ -16,12 +17,9 @@ export const Gameboard: React.FC<GameboardProps> = ({
   onChange,
   children,
 }) => {
-  const {
-    player,
-    board,
-    setBoardState,
-    setCurrentPLayer,
-  } = useBoard();
+  const { player, board } = useBoard();
+  const resetGame = useResetBoard();
+
   const onBoardBlockClick = useCallback(
     (index: number) => {
       let newBoardState = board;
@@ -30,11 +28,6 @@ export const Gameboard: React.FC<GameboardProps> = ({
     },
     [board, onChange, player]
   );
-
-  const resetGame = useCallback(() => {
-    setCurrentPLayer("X");
-    setBoardState(Array(9).fill(""));
-  }, [setBoardState, setCurrentPLayer]);
 
   return (
     <div

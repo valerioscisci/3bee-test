@@ -1,16 +1,21 @@
 import { BoardBlock } from "@/components/BoardBlock/BoardBlock";
 import { Gameboard } from "@/components/GameBoard/GameBoard";
+import { GameOverModal } from "@/components/GameOverModal/GameOverModal";
+import { useResetBoard } from "@/components/hooks/useResetBoard";
 import { env } from "@/config/env";
 import { useBoard } from "@/contexts/BoardContext";
 import { Player } from "@/types";
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMutation } from "react-query";
 
 export default function Home() {
-  const [isGameOver, setIsGameOver] = useState(
-    false
-  );
+  const resetGame = useResetBoard();
+
+  const [gameOver, setGameOver] = useState({
+    status: "",
+    winner: "",
+  });
   const [isError, setIsError] = useState(false);
   const { setCurrentPLayer } = useBoard();
 
@@ -27,33 +32,52 @@ export default function Home() {
     boardState: Array<string>,
     currentPlayer: Player
   ) => {
-    // check if there are other moves available
-    if (
-      !boardState.some(
-        (val: string) => val === ""
-      )
-    ) {
-      setIsGameOver(true);
-    }
     // fetch api to check if there is a winner
     try {
-      await getWinnerMutation.mutateAsync(
+      const response = await getWinnerMutation.mutateAsync(
         boardState
       );
       // if winner open modal to show who is the winner
-      // if no winner but moves available keep going
-      // if no winner and no move is available show modal
-      setCurrentPLayer(
-        currentPlayer === "X" ? "O" : "X"
-      );
+      setGameOver({
+        status: "win",
+        winner: response.data.winner,
+      });
     } catch (e) {
       console.warn(
         "An error has occurred while updating the board. ",
         e
       );
-      setIsError(true);
+      if (
+        (e as any).response.data.error !==
+        "Winner not found"
+      ) {
+        setIsError(true);
+      } else {
+        // check if there are other moves available
+        if (
+          !boardState.some(
+            (val: string) => val === ""
+          )
+        ) {
+          // if no winner and no move is available show modal
+          setGameOver({
+            status: "draw",
+            winner: "",
+          });
+        } else {
+          // if no winner but moves available keep going
+          setCurrentPLayer(
+            currentPlayer === "X" ? "O" : "X"
+          );
+        }
+      }
     }
   };
+
+  const hideGameOverModal = useCallback(() => {
+    resetGame();
+    setGameOver({ status: "", winner: "" });
+  }, [resetGame]);
 
   return (
     <>
@@ -67,6 +91,11 @@ export default function Home() {
         <Gameboard onChange={handleChange}>
           {(i) => <BoardBlock index={i} />}
         </Gameboard>
+        <GameOverModal
+          showModal={!!gameOver.status}
+          gameOver={gameOver}
+          hideModal={hideGameOverModal}
+        />
       </main>
     </>
   );
