@@ -53,7 +53,7 @@ export default function Home() {
 ###
 
 In order to allow a multiplayer experience we could create a random generated url that the first player could share with the other.
-Afterwards, we might limit the number of players per page to 2 and than use webhooks to allow the two players browsers to receive the updated state after one player does his move.
+Afterwards, we might limit the number of players per page to 2 and than use websockets to allow the two players browsers to receive the updated state after one player does his move. To make the game more engaging we might add a scoreboard to track how many games each player won.
 
 ###
 
