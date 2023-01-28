@@ -20,7 +20,7 @@ type boardContext = {
 
 const boardContextDefaultValues: boardContext = {
   player: "X",
-  board: Array(10).fill(""),
+  board: Array(9).fill(""),
   setCurrentPLayer: () => {},
   setBoardState: () => {},
 };

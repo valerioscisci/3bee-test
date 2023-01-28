@@ -10,5 +10,11 @@ export const BoardBlock: React.FC<BoardBlockProps> = ({
   const { board } = useBoard();
   const currentValue = board[index];
 
-  return <div>{currentValue}</div>;
+  return (
+    <div
+      className={"absolute text-white text-3xl"}
+    >
+      {currentValue}
+    </div>
+  );
 };

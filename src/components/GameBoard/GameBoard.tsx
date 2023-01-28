@@ -26,14 +26,14 @@ export const Gameboard: React.FC<GameboardProps> = ({
     (index: number) => {
       let newBoardState = board;
       newBoardState[index] = player;
-      setBoardState(newBoardState);
+      onChange(newBoardState, player);
     },
-    [board, player, setBoardState]
+    [board, onChange, player]
   );
 
   const resetGame = useCallback(() => {
     setCurrentPLayer("X");
-    setBoardState(Array(10).fill(""));
+    setBoardState(Array(9).fill(""));
   }, [setBoardState, setCurrentPLayer]);
 
   return (
@@ -76,14 +76,19 @@ export const Gameboard: React.FC<GameboardProps> = ({
                 return (
                   <div
                     key={boardBlock}
-                    onClick={() =>
-                      onBoardBlockClick(
-                        boardBlock
-                      )
-                    }
-                    className={
-                      "bg-slate-600 flex flex-grow items-center justify-center first:mr-2 first:md:mr-4 last:ml-2 last:md:ml-4 aspect-square cursor-pointer"
-                    }
+                    onClick={() => {
+                      if (
+                        board[boardBlock] === ""
+                      ) {
+                        onBoardBlockClick(
+                          boardBlock
+                        );
+                      }
+                    }}
+                    className={`bg-slate-600 flex flex-grow items-center justify-center first:mr-2 first:md:mr-4 last:ml-2 last:md:ml-4 aspect-square ${
+                      board[boardBlock] === "" &&
+                      "cursor-pointer"
+                    }`}
                   >
                     {children(boardBlock)}
                   </div>
