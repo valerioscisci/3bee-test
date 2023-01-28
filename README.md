@@ -16,7 +16,10 @@ You **must** follow this implementation:
 
 ```jsx
 export default function Home() {
-  const handleChange = (boardState, currentPlayer) => {
+  const handleChange = (
+    boardState,
+    currentPlayer
+  ) => {
     // check if there are other moves available
     // fetch api to check if there is a winner
     // if winner open modal to show who is the winner
@@ -47,8 +50,15 @@ export default function Home() {
 
 - Explain how to move from SINGLE console player to a multiplayer version (remote)
 
+###
+
+In order to allow a multiplayer experience we could create a random generated url that the first player could share with the other.
+Afterwards, we might limit the number of players per page to 2 and than use webhooks to allow the two players browsers to receive the updated state after one player does his move.
+
+###
+
 - Use Tailwind
 
 - Use Typescript
 
-- After deploy 
+- After deploy
