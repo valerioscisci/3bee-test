@@ -1,8 +1,20 @@
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 type boardContext = {
   player: "X" | "O";
   board: Array<Array<string>>;
+  setCurrentPLayer: Dispatch<
+    SetStateAction<"X" | "O">
+  >;
+  setBoardState: Dispatch<
+    SetStateAction<string[][]>
+  >;
 };
 
 const boardContextDefaultValues: boardContext = {
@@ -12,6 +24,8 @@ const boardContextDefaultValues: boardContext = {
     ["", "", ""],
     ["", "", ""],
   ],
+  setCurrentPLayer: () => {},
+  setBoardState: () => {},
 };
 
 const BoardContext = createContext<boardContext>(
@@ -29,13 +43,23 @@ type Props = {
 export function BoardContextProvider({
   children,
 }: Props) {
-  const value = boardContextDefaultValues;
+  const [boardState, setBoardState] = useState(
+    boardContextDefaultValues.board
+  );
+  const [player, setCurrentPLayer] = useState(
+    boardContextDefaultValues.player
+  );
+
+  const value = {
+    board: boardState,
+    setBoardState,
+    player,
+    setCurrentPLayer,
+  };
 
   return (
-    <>
-      <BoardContext.Provider value={value}>
-        {children}
-      </BoardContext.Provider>
-    </>
+    <BoardContext.Provider value={value}>
+      {children}
+    </BoardContext.Provider>
   );
 }

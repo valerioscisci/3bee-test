@@ -1,3 +1,5 @@
+import { useBoard } from "@/contexts/BoardContext";
+
 interface BoardBlockProps {
   index: number;
 }
@@ -5,6 +7,8 @@ interface BoardBlockProps {
 export const BoardBlock: React.FC<BoardBlockProps> = ({
   i,
 }) => {
+  const { player, board } = useBoard();
+  console.log(player, board);
   return (
     <div
       className={

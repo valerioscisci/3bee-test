@@ -18,7 +18,7 @@ export default function Home() {
     <BoardContextProvider>
       <main
         className={
-          "bg-gray-800 flex-1 min-h-screen xl:px-52"
+          "bg-gray-800 flex-1 min-h-screen"
         }
       >
         <Gameboard onChange={handleChange}>
