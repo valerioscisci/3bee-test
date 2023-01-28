@@ -14,10 +14,14 @@ export const Gameboard: React.FC<GameboardProps> = ({
   children,
 }) => {
   return (
-    <div className={"p-4 md:p-6 lg:p-8"}>
+    <div
+      className={
+        "p-2 md:p-4 lg:p-6 max-w-screen-sm justify-center mx-auto"
+      }
+    >
       <div
         className={
-          "flex flex-row justify-between font-semibold items-center "
+          "flex flex-row justify-between font-semibold items-center md:text-lg"
         }
       >
         <h1
@@ -35,15 +39,13 @@ export const Gameboard: React.FC<GameboardProps> = ({
           Reset
         </button>
       </div>
-      <div
-        className={"mt-8 md:mt-16 aspect-square"}
-      >
+      <div className={"mt-4 aspect-square"}>
         {BOARD_STRUCTURE.map((row) => {
           return (
             <div
               key={row.toString()}
               className={
-                "bg-slate-900 p-2 flex flex-row w-full px-4 first:pt-4 first:rounded-t-md last:pb-4 last:rounded-b-md"
+                "bg-slate-900 flex flex-row w-full p-1 md:p-2 px-2 md:px-4 first:pt-2 first:md:pt-4 first:rounded-t-md last:pb-2 last:md:pb-4 last:rounded-b-md"
               }
             >
               {row.map((boardBlock) => {
