@@ -1,9 +1,12 @@
 import { BOARD_STRUCTURE } from "@/const/constants";
+import { useBoard } from "@/contexts/BoardContext";
+import { Player } from "@/types";
+import { useCallback } from "react";
 
 interface GameboardProps {
   onChange: (
-    boardState: any,
-    currentPlayer: any
+    boardState: Array<string>,
+    currentPlayer: Player
   ) => void;
   children: (i: number) => React.ReactNode;
 }
@@ -13,6 +16,26 @@ export const Gameboard: React.FC<GameboardProps> = ({
   onChange,
   children,
 }) => {
+  const {
+    player,
+    board,
+    setBoardState,
+    setCurrentPLayer,
+  } = useBoard();
+  const onBoardBlockClick = useCallback(
+    (index: number) => {
+      let newBoardState = board;
+      newBoardState[index] = player;
+      setBoardState(newBoardState);
+    },
+    [board, player, setBoardState]
+  );
+
+  const resetGame = useCallback(() => {
+    setCurrentPLayer("X");
+    setBoardState(Array(10).fill(""));
+  }, [setBoardState, setCurrentPLayer]);
+
   return (
     <div
       className={
@@ -29,12 +52,13 @@ export const Gameboard: React.FC<GameboardProps> = ({
             "text-white md:text-lg lg:text-xl"
           }
         >
-          Current Player:
+          Current Player: {player}
         </h1>
         <button
           className={
             "bg-slate-500 py-3 px-8 rounded-xl hover:bg-slate-300 hover:shadow-md"
           }
+          onClick={resetGame}
         >
           Reset
         </button>
@@ -49,7 +73,21 @@ export const Gameboard: React.FC<GameboardProps> = ({
               }
             >
               {row.map((boardBlock) => {
-                return children(boardBlock);
+                return (
+                  <div
+                    key={boardBlock}
+                    onClick={() =>
+                      onBoardBlockClick(
+                        boardBlock
+                      )
+                    }
+                    className={
+                      "bg-slate-600 flex flex-grow items-center justify-center first:mr-2 first:md:mr-4 last:ml-2 last:md:ml-4 aspect-square cursor-pointer"
+                    }
+                  >
+                    {children(boardBlock)}
+                  </div>
+                );
               })}
             </div>
           );

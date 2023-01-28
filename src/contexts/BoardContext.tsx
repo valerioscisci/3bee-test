@@ -1,3 +1,4 @@
+import { Player } from "@/types";
 import {
   createContext,
   Dispatch,
@@ -7,23 +8,19 @@ import {
 } from "react";
 
 type boardContext = {
-  player: "X" | "O";
-  board: Array<Array<string>>;
+  player: Player;
+  board: Array<string>;
   setCurrentPLayer: Dispatch<
-    SetStateAction<"X" | "O">
+    SetStateAction<Player>
   >;
   setBoardState: Dispatch<
-    SetStateAction<string[][]>
+    SetStateAction<string[]>
   >;
 };
 
 const boardContextDefaultValues: boardContext = {
   player: "X",
-  board: [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
-  ],
+  board: Array(10).fill(""),
   setCurrentPLayer: () => {},
   setBoardState: () => {},
 };
