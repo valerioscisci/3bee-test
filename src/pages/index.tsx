@@ -1,13 +1,14 @@
 import { BoardBlock } from "@/components/BoardBlock/BoardBlock";
 import { Gameboard } from "@/components/GameBoard/GameBoard";
 import { GameOverModal } from "@/components/GameOverModal/GameOverModal";
-import { useResetBoard } from "@/components/hooks/useResetBoard";
+import { useResetBoard } from "@/hooks/useResetBoard";
 import { env } from "@/config/env";
 import { useBoard } from "@/contexts/BoardContext";
 import { Player } from "@/types";
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useMutation } from "react-query";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Home() {
   const resetGame = useResetBoard();
@@ -86,8 +87,23 @@ export default function Home() {
           "bg-gray-800 flex-1 min-h-screen"
         }
       >
-        {/* TODO: disable board while fetching
-        the backend and add a loader*/}
+        {/* TODO: add a toast error when the call to the backend fails*/}
+        {getWinnerMutation.isLoading && (
+          <div
+            className={
+              "absolute w-full h-full flex items-center justify-center"
+            }
+          >
+            <ClipLoader
+              loading={
+                getWinnerMutation.isLoading
+              }
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        )}
         <Gameboard onChange={handleChange}>
           {(i) => <BoardBlock index={i} />}
         </Gameboard>
