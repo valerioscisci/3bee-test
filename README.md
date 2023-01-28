@@ -43,3 +43,7 @@ export default function Home() {
 - Fetch results from the endpoint on every change (Bonus points if you manage to use react query mutations)
 
 - Bonus points if you manage to do some tests
+
+- Use Tailwind
+
+- Use Typescript
