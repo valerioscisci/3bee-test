@@ -22,6 +22,7 @@ export default function Home() {
     // if winner open modal to show who is the winner
     // if no winner but moves available keep going
     // if no winner and no move is available show modal
+    // post the Final Board state tu a fake API fake.api.3bee/board
   };
 
   return (
@@ -44,6 +45,10 @@ export default function Home() {
 
 - Bonus points if you manage to do some tests
 
+- Explain how to move from SINGLE console player to a multiplayer version (remote)
+
 - Use Tailwind
 
 - Use Typescript
+
+- After deploy 
