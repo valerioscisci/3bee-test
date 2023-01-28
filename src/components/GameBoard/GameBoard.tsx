@@ -2,7 +2,7 @@ import { BOARD_STRUCTURE } from "@/const/constants";
 import { useBoard } from "@/contexts/BoardContext";
 import { Player } from "@/types";
 import { useCallback } from "react";
-import { useResetBoard } from "../hooks/useResetBoard";
+import { useResetBoard } from "../../hooks/useResetBoard";
 
 interface GameboardProps {
   onChange: (

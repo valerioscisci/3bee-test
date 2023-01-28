@@ -1,7 +1,7 @@
 import { BoardBlock } from "@/components/BoardBlock/BoardBlock";
 import { Gameboard } from "@/components/GameBoard/GameBoard";
 import { GameOverModal } from "@/components/GameOverModal/GameOverModal";
-import { useResetBoard } from "@/components/hooks/useResetBoard";
+import { useResetBoard } from "@/hooks/useResetBoard";
 import { env } from "@/config/env";
 import { useBoard } from "@/contexts/BoardContext";
 import { Player } from "@/types";
@@ -87,6 +87,7 @@ export default function Home() {
           "bg-gray-800 flex-1 min-h-screen"
         }
       >
+        {/* TODO: add a toast error when the call to the backend fails*/}
         {getWinnerMutation.isLoading && (
           <div
             className={
