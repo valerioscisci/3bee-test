@@ -62,6 +62,7 @@ export const Gameboard: React.FC<GameboardProps> = ({
             "bg-slate-500 py-3 px-8 rounded-xl hover:bg-slate-300 hover:shadow-md"
           }
           onClick={resetGame}
+          data-cy={"reset-board"}
         >
           Reset
         </button>
@@ -79,6 +80,7 @@ export const Gameboard: React.FC<GameboardProps> = ({
                 return (
                   <div
                     key={boardBlock}
+                    data-cy={`board-block-${boardBlock}`}
                     onClick={() => {
                       if (
                         board[boardBlock] ===
