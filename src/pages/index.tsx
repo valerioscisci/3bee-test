@@ -97,7 +97,7 @@ export default function Home() {
           <ToastMessage
             show={isError}
             message={
-              "⚠️ An error has occurred while ncommunicating with the server. Please retry."
+              "⚠️ An error has occurred while communicating with the server. Please retry."
             }
             hide={() => {
               setIsError(false);
