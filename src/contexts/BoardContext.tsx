@@ -10,19 +10,23 @@ import {
 type boardContext = {
   player: Player;
   board: Array<string>;
+  isLoading: boolean;
   setCurrentPLayer: Dispatch<
     SetStateAction<Player>
   >;
   setBoardState: Dispatch<
     SetStateAction<string[]>
   >;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const boardContextDefaultValues: boardContext = {
   player: "X",
   board: Array(9).fill(""),
+  isLoading: false,
   setCurrentPLayer: () => {},
   setBoardState: () => {},
+  setIsLoading: () => {},
 };
 
 const BoardContext = createContext<boardContext>(
@@ -46,12 +50,17 @@ export function BoardContextProvider({
   const [player, setCurrentPLayer] = useState(
     boardContextDefaultValues.player
   );
+  const [isLoading, setIsLoading] = useState(
+    boardContextDefaultValues.isLoading
+  );
 
   const value = {
     board: boardState,
     setBoardState,
     player,
     setCurrentPLayer,
+    isLoading,
+    setIsLoading,
   };
 
   return (

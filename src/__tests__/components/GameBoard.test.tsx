@@ -1,10 +1,13 @@
 import {
   render,
   fireEvent,
+  renderHook,
+  act,
 } from "@testing-library/react";
 import { useBoard } from "@/contexts/BoardContext";
 import { Gameboard } from "@/components/GameBoard/GameBoard";
 import "@testing-library/jest-dom";
+import { useState } from "react";
 
 jest.mock("@/contexts/BoardContext", () => ({
   useBoard: jest.fn(),
@@ -12,12 +15,18 @@ jest.mock("@/contexts/BoardContext", () => ({
 
 describe("<GameBoard />", () => {
   beforeEach(() => {
+    const { result } = renderHook(() =>
+      useState(false)
+    );
+    const [state, setState] = result.current;
     (useBoard as jest.Mock).mockImplementation(
       () => ({
         player: "X",
         board: Array(9).fill(""),
-        setBoardState: jest.fn(),
+        isLoading: false,
+        setBoardState: state,
         setCurrentPLayer: jest.fn(),
+        setIsLoading: setState,
       })
     );
   });
@@ -46,5 +55,19 @@ describe("<GameBoard />", () => {
     const block = getByTestId("block-0");
     fireEvent.click(block);
     expect(onChange).toBeCalledTimes(1);
+  });
+
+  it("should not render the loading spinner", () => {
+    const onChange = jest.fn();
+    const { result } = renderHook(() =>
+      useBoard()
+    );
+    const { queryByTestId } = render(
+      <Gameboard onChange={onChange}>
+        {(_) => <></>}
+      </Gameboard>
+    );
+    expect(result.current.isLoading).toBeFalsy();
+    expect(queryByTestId("loader")).toBeNull();
   });
 });

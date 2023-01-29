@@ -2,6 +2,7 @@ import { BOARD_STRUCTURE } from "@/const/constants";
 import { useBoard } from "@/contexts/BoardContext";
 import { Player } from "@/types";
 import { useCallback } from "react";
+import { ClipLoader } from "react-spinners";
 import { useResetBoard } from "../../hooks/useResetBoard";
 
 interface GameboardProps {
@@ -17,7 +18,7 @@ export const Gameboard: React.FC<GameboardProps> = ({
   onChange,
   children,
 }) => {
-  const { player, board } = useBoard();
+  const { player, board, isLoading } = useBoard();
   const resetGame = useResetBoard();
 
   const onBoardBlockClick = useCallback(
@@ -42,10 +43,19 @@ export const Gameboard: React.FC<GameboardProps> = ({
       >
         <h1
           className={
-            "text-white md:text-lg lg:text-xl"
+            "text-white md:text-lg lg:text-xl flex items-center gap-2"
           }
         >
           Current Player: {player}
+          {isLoading && (
+            <ClipLoader
+              loading={isLoading}
+              size={35}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+              color={"white"}
+            />
+          )}
         </h1>
         <button
           className={
@@ -71,7 +81,9 @@ export const Gameboard: React.FC<GameboardProps> = ({
                     key={boardBlock}
                     onClick={() => {
                       if (
-                        board[boardBlock] === ""
+                        board[boardBlock] ===
+                          "" &&
+                        !isLoading
                       ) {
                         onBoardBlockClick(
                           boardBlock
