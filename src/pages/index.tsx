@@ -8,7 +8,7 @@ import { Player } from "@/types";
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useMutation } from "react-query";
-import ClipLoader from "react-spinners/ClipLoader";
+import { ToastMessage } from "@/components/ToastMessage/ToastMessage";
 
 export default function Home() {
   const resetGame = useResetBoard();
@@ -18,7 +18,10 @@ export default function Home() {
     winner: "",
   });
   const [isError, setIsError] = useState(false);
-  const { setCurrentPLayer } = useBoard();
+  const {
+    setCurrentPLayer,
+    setIsLoading,
+  } = useBoard();
 
   const getWinnerMutation = useMutation(
     (boardState: Array<string>) => {
@@ -33,6 +36,7 @@ export default function Home() {
     boardState: Array<string>,
     currentPlayer: Player
   ) => {
+    setIsLoading(true);
     // fetch api to check if there is a winner
     try {
       const response = await getWinnerMutation.mutateAsync(
@@ -72,6 +76,8 @@ export default function Home() {
           );
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,22 +93,16 @@ export default function Home() {
           "bg-gray-800 flex-1 min-h-screen"
         }
       >
-        {/* TODO: add a toast error when the call to the backend fails*/}
-        {getWinnerMutation.isLoading && (
-          <div
-            className={
-              "absolute w-full h-full flex items-center justify-center"
+        {isError && (
+          <ToastMessage
+            show={isError}
+            message={
+              "⚠️ An error has occurred while ncommunicating with the server. Please retry."
             }
-          >
-            <ClipLoader
-              loading={
-                getWinnerMutation.isLoading
-              }
-              size={150}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
-          </div>
+            hide={() => {
+              setIsError(false);
+            }}
+          />
         )}
         <Gameboard onChange={handleChange}>
           {(i) => <BoardBlock index={i} />}
